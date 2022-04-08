@@ -3,7 +3,7 @@ A python implementation of the board game Othello, with a rudimentary GUI and a 
 
 ## Run the program:
 Requires the following libraries:
-- graphics.py
+- graphics.py  :  `pip install graphics.py`  
 
 To run the program, run the following command:
 ```
