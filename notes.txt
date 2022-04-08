@@ -1,0 +1,33 @@
+Working notes for development
+
+key :   o - not completed
+        x - completed
+        / - not a priority/abandoned
+
+/ switch color numbers to be [-1, 1] instead of [1, 2] to follow common practice
+
+GUI:  o - add display options, to show whose turn, current stone counts, turn count, etc.
+      o - Add "Winner" gui
+      o - add "undo turn" input
+      o - how to specify which agents are playing? command line input?
+        
+o - headless mode which simulates the entire game are returns the winner without drawing
+
+o - framework for simulating two agents against each other repeatedly, tallying wins
+
+/ - Faster "potential move" generation, rather than checking every square for adjacency?
+
+x - greedy agent - always makes the move that flips the most tokens
+x - generous agent - always makes the move that flips the least tokens
+
+x - greedy agent + heuristics - always makes the move that gets the most points, considering position value
+x - generous agent + heuristics - converse of above
+
+/ - diagonal agent, orthogonal agent - always makes the move that flips the most tokens diagonally or orthogonally, respectively
+
+x - alpha-beta
+x - pure monte carlo
+x - monte-carlo
+o - NN
+
+x - edge cases - corner changes colors? - from testing and observations the game is sound for 8x8 and 6x6.
