@@ -251,7 +251,9 @@ def main():
     #agent_1 = GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY)
     #agent_1 = AlphaBetaAgent(EvaluationFunctions.MAJORITY, depth)
     #agent_1 = AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, depth)
+    #agent_1 = AlphaBetaAgent(EvaluationFunctions.PURE_MONTE_CARLO(5), depth)
     #agent_1 = PureMonteCarloAgent(100)
+    #agent_1 = MonteCarloTreeSearch(10)
     
     #agent_2 = HumanAgent()
     #agent_2 = RandomAgent()
