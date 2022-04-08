@@ -63,6 +63,9 @@ class RandomAgent:
     def select_move(self, board):
         return random.choice(board.valid_moves)
     
+    def reset(self):
+        return
+    
     def __str__(self):
         return "Random Agent"
 
@@ -121,6 +124,9 @@ class AlphaBetaAgent:
                 local_alpha = local_best_value
         return local_best_value
     
+    def reset(self):
+        return
+    
     def __str__(self):
         return "AlphaBeta Agent (Depth: %d)" % self.depth
 
@@ -150,6 +156,8 @@ class GreedyAgent:
         # Returns a random choice of the best moves
         return random.choice(best_moves)  
     
+    def reset(self):
+        return
     
     def __str__(self):
         return "Greedy Agent"
@@ -178,6 +186,8 @@ class PureMonteCarloAgent:
         print (str(best_percentage) + "***")
         return random.choice(best_moves)
 
+    def reset(self):
+        return
     
     def __str__(self):
         return "Pure MonteCarlo Agent (%d playouts)" % self.games_per_node
@@ -192,7 +202,11 @@ class MonteCarloTreeSearch:
         node = PythelloNode(board)
         for _ in range(self.rollout_count):
             self.tree.do_rollout(node)
-        return self.tree.choose(node)
+        best_node = self.tree.choose(node)
+        return best_node.board.move_history[-1]
+    
+    def reset(self):
+        self.tree = MCTS()
     
     def __str__(self):
         return "Monte Carlo Tree Search (%d rollouts per move)" % self.rollout_count

@@ -7,7 +7,7 @@ key :   o - not completed
 / switch color numbers to be [-1, 1] instead of [1, 2] to follow common practice
 
 GUI:  o - add display options, to show whose turn, current stone counts, turn count, etc.
-      o - Add "Winner" gui
+      o - Add "Winner" text
       o - add "undo turn" input
       o - how to specify which agents are playing? command line input?
         
@@ -30,4 +30,18 @@ x - pure monte carlo
 x - monte-carlo
 o - NN
 
-x - edge cases - corner changes colors? - from testing and observations the game is sound for 8x8 and 6x6.
+o - bound the allowed computation time of agents (instead of depth/number of rollouts/etc) 
+        to give a fair comparison between approaches
+
+o - many agents have similar patterns - differing computation 
+        could probably be moved to individual evaluation functions instead of separate classes
+
+o - compare against state-of-the-art?
+o - run in browser?
+o - multithreading?
+
+x - definitely a memory leak somewhere... 
+        Found it.  MCTS kept accumulating nodes between plays, added a reset function to the agents.
+
+x - edge cases - corner changes colors? - from testing and 
+        observations the game is sound for 8x8 and 6x6.

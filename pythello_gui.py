@@ -240,6 +240,9 @@ def main():
         def select_move(self, board):
             return get_input(display, board)
         
+        def reset(self):
+            return
+        
         def __str__(self):
             return "Player"
     
@@ -247,9 +250,9 @@ def main():
     
     #agent_1 = HumanAgent()
     #agent_1 = RandomAgent()
-    agent_1 = GreedyAgent(EvaluationFunctions.MAJORITY)
+    #agent_1 = GreedyAgent(EvaluationFunctions.MAJORITY)
     #agent_1 = GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY)
-    #agent_1 = AlphaBetaAgent(EvaluationFunctions.MAJORITY, depth)
+    agent_1 = AlphaBetaAgent(EvaluationFunctions.MAJORITY, depth)
     #agent_1 = AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, depth)
     #agent_1 = AlphaBetaAgent(EvaluationFunctions.PURE_MONTE_CARLO(5), depth)
     #agent_1 = PureMonteCarloAgent(100)
@@ -263,7 +266,7 @@ def main():
     #agent_2 = AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, depth)
     #agent_2 = AlphaBetaAgent(EvaluationFunctions.PURE_MONTE_CARLO(5), depth)
     #agent_2 = PureMonteCarloAgent(100)
-    agent_2 = MonteCarloTreeSearch(10)
+    agent_2 = MonteCarloTreeSearch(20)
 
     update_window(display, board, draw_valid_moves=True, draw_previous_move=False)
     
@@ -304,6 +307,8 @@ def main():
             update_window(display, board, draw_valid_moves = False, draw_previous_move=False, )
         update_window(display, board, draw_valid_moves = True, draw_previous_move=False, )
         agent_1_color = INVERSE_COLOR[agent_1_color]
+        agent_1.reset()
+        agent_2.reset()
 
 
 if __name__ == "__main__":

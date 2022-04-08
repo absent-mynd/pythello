@@ -33,8 +33,9 @@ class MCTS:
                 return float("-inf")  # avoid unseen moves
             return self.Q[n] / self.N[n]  # average reward
 
-        # Edit for reversAI - grab the move that made the board position.
-        return max(self.children[node], key=score).board.move_history[-1]
+        best_node = max(self.children[node], key=score)
+        print("MCTS best score: ", score(best_node))
+        return best_node
 
     def do_rollout(self, node):
         "Make the tree one layer better. (Train for one iteration.)"
