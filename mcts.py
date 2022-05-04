@@ -34,7 +34,7 @@ class MCTS:
             return self.Q[n] / self.N[n]  # average reward
 
         best_node = max(self.children[node], key=score)
-        print("MCTS best score: ", score(best_node))
+        #print("MCTS best score: ", score(best_node))
         return best_node
 
     def do_rollout(self, node):
@@ -141,7 +141,7 @@ class Node(ABC):
 class PythelloNode(Node):
     
     def __init__(self, board):
-        self.board = board.copy()
+        self.board = Pythello.Board.from_other_board(board)
         self.depth = board.statistics["move_depth"]
         self.winner = board.get_winner()
         self.children = []

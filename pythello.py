@@ -8,6 +8,7 @@ WHITE = 2
 EMPTY = 0
 
 INVERSE_COLOR = [EMPTY, WHITE, BLACK]
+COLOR_TO_STRING = ["Empty", "Black", "White"]
 
 class Pythello:
     # 1 = black   2 = white
@@ -44,6 +45,20 @@ class Pythello:
                 "move_depth" : 0,
                 "total_positions_encountered" : 1
             }
+            
+        @classmethod
+        def from_other_board(cls, other_board):
+            new_board = cls(other_board.game_instance)
+            new_board.grid = [[other_board.grid[j][i] for i in range(other_board.game_instance.cols)]
+                            for j in range(other_board.game_instance.rows)]
+            new_board.color = other_board.color
+            new_board.game_instance = other_board.game_instance
+            new_board.prev_player_passed = other_board.prev_player_passed
+            new_board.game_over = other_board.game_over
+            new_board.valid_moves = [move for move in other_board.valid_moves]
+            new_board.move_history = [move for move in other_board.move_history]
+            new_board.statistics = other_board.statistics.copy()
+            return new_board
 
         def get_winner(self):
             if not self.game_over:
@@ -208,7 +223,10 @@ class Pythello:
 
             # Always change color to color of the move being undone
             self.color = move.color
-
+            
+            # Every valid turn, either a placement or a pass, do:
+            self.statistics["move_depth"] -= 1
+            
             # Also, always set the valid move frontier to what it was before the move was played.
             self.valid_moves = move.get_valid_moves()
 

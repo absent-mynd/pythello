@@ -1,14 +1,18 @@
-from pythello import Pythello, BLACK, WHITE, EMPTY, INVERSE_COLOR
+from pythello import Pythello, BLACK, WHITE, EMPTY, INVERSE_COLOR, COLOR_TO_STRING
 from graphics import *
 from pythello_ai_agents import *
-import time
+from time import time
 
+from pythello_stats import PythelloStats
+
+headless = False
 
 def point_in_bounding_box(point, p_1, p_2):
     return point.getX() >= p_1.getX() and point.getX() < p_2.getX() and point.getY() >= p_1.getY() and point.getY() < p_2.getY()
 
 
 def init_window(dim_x, dim_y, rows, cols):
+    if headless: return
     win = GraphWin('ReversAI', dim_x, dim_y, autoflush=False)
     display_grid_black_stones = []
     display_grid_white_stones = []
@@ -117,6 +121,7 @@ def init_window(dim_x, dim_y, rows, cols):
 
 
 def update_window(display_object, board, last_play=[], last_flipped=[], draw_valid_moves=True, draw_previous_move=True):
+    if headless: return
     grid = board.grid
     win = display_object["win"]
     for row in range(len(grid)):
@@ -200,6 +205,7 @@ def update_window(display_object, board, last_play=[], last_flipped=[], draw_val
 
 
 def get_input(display_object, board):
+    if headless: return
     valid_move_indicators = []
     win = display_object["win"]
     moves_array = display_object["moves_b"] if board.color == 1 else display_object["moves_w"]
@@ -227,13 +233,13 @@ def get_input(display_object, board):
 
 
 def main():
-    game = Pythello(6, 6)
+    game = Pythello(8, 8)
     moveList = []
     board = game.new_pos()
     board.initialize_board_othello()
 
-    dimX = 1000
-    dimY = 1000
+    dimX = 500
+    dimY = 500
     display = init_window(dimX, dimY, game.rows, game.cols)
     
     class HumanAgent:
@@ -246,33 +252,47 @@ def main():
         def __str__(self):
             return "Player"
     
-    depth = 5
+    time_limit = 3
     
-    #agent_1 = HumanAgent()
-    #agent_1 = RandomAgent()
-    #agent_1 = GreedyAgent(EvaluationFunctions.MAJORITY)
-    #agent_1 = GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY)
-    agent_1 = AlphaBetaAgent(EvaluationFunctions.MAJORITY, depth)
-    #agent_1 = AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, depth)
-    #agent_1 = AlphaBetaAgent(EvaluationFunctions.PURE_MONTE_CARLO(5), depth)
-    #agent_1 = PureMonteCarloAgent(100)
-    #agent_1 = MonteCarloTreeSearch(10)
+    stats = PythelloStats()
     
-    #agent_2 = HumanAgent()
-    #agent_2 = RandomAgent()
-    #agent_2 = GreedyAgent(EvaluationFunctions.MAJORITY)
-    #agent_2 = GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY)
-    #agent_2 = AlphaBetaAgent(EvaluationFunctions.MAJORITY, depth)
-    #agent_2 = AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, depth)
-    #agent_2 = AlphaBetaAgent(EvaluationFunctions.PURE_MONTE_CARLO(5), depth)
-    #agent_2 = PureMonteCarloAgent(100)
-    agent_2 = MonteCarloTreeSearch(20)
+    agent_1_options = [
+        RandomAgent(),
+        GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
+        GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY, "WMAJ"),
+        AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
+        AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, time_limit, "WMAJ"),
+        PureMonteCarloAgent(time_limit),
+        MonteCarloTreeSearch(time_limit)
+    ]
+    agent_2_options = [
+        RandomAgent(),
+        GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
+        GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY, "WMAJ"),
+        AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
+        AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, time_limit, "WMAJ"),
+        PureMonteCarloAgent(time_limit),
+        MonteCarloTreeSearch(time_limit)
+    ]
+    random.seed()
+    
+    randomAgent = True
+    # to choose an agent, specify it here & turn off randomAgent
+    agent_1 = HumanAgent()
+    agent_2 = HumanAgent()
 
     update_window(display, board, draw_valid_moves=True, draw_previous_move=False)
     
     # flips back and forth during consecutive games.
     agent_1_color = BLACK
     while True:
+        if randomAgent:
+            agent_1 = random.choice(agent_1_options)
+            agent_2 = random.choice(agent_2_options)
+            print("Agent 1 (%s): %s VS Agent 2 (%s): %s" % 
+                  (COLOR_TO_STRING[agent_1_color], str(agent_1),
+                   COLOR_TO_STRING[INVERSE_COLOR[agent_1_color]], str(agent_2)))
+        
         while not board.game_over:
             if (board.color == agent_1_color):
                 newMove = agent_1.select_move(board)
@@ -291,24 +311,30 @@ def main():
             update_window(display, board, prev_move, flipped)
             #time.sleep(.1)
         win_color = board.get_winner()
-        win_color_text = "black" if win_color is BLACK else "white"
+        win_color_text = COLOR_TO_STRING[win_color]
+        
+        stats.add_agent_to_stats(agent_1.shortstr())
+        stats.add_agent_to_stats(agent_2.shortstr())
         
         if win_color == agent_1_color :
             win_text = "WINNER: Agent 1, " + win_color_text +", " + str(agent_1)
+            stats.update_stat_win(agent_1.shortstr(), agent_2.shortstr(), agent_1_color)
         elif win_color == INVERSE_COLOR[agent_1_color]:
             win_text = "WINNER: Agent 2, " + win_color_text +", " + str(agent_2)
+            stats.update_stat_win(agent_2.shortstr(), agent_1.shortstr(), INVERSE_COLOR[agent_1_color])
         else:
             win_text = str(agent_1) + " ties with " + str(agent_2)
-            
+            stats.update_stat_tie(agent_1.shortstr(), agent_2.shortstr(), agent_1_color)
+        
         print(win_text)
-
+        
         while board.move_history:
             board.undo_move()
             update_window(display, board, draw_valid_moves = False, draw_previous_move=False, )
         update_window(display, board, draw_valid_moves = True, draw_previous_move=False, )
         agent_1_color = INVERSE_COLOR[agent_1_color]
         agent_1.reset()
-        agent_2.reset()
+        agent_2.reset() 
 
 
 if __name__ == "__main__":

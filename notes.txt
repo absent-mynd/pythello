@@ -39,6 +39,9 @@ o - many agents have similar patterns - differing computation
 o - compare against state-of-the-art?
 o - run in browser?
 o - multithreading?
+o - mix of MC/alpha-beta
+o - previous board
+o - vary MCTS c
 
 x - definitely a memory leak somewhere... 
         Found it.  MCTS kept accumulating nodes between plays, added a reset function to the agents.
