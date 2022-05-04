@@ -233,13 +233,13 @@ def get_input(display_object, board):
 
 
 def main():
-    game = Pythello(8, 8)
+    game = Pythello(4, 4)
     moveList = []
     board = game.new_pos()
     board.initialize_board_othello()
 
-    dimX = 500
-    dimY = 500
+    dimX = 1000
+    dimY = 1000
     display = init_window(dimX, dimY, game.rows, game.cols)
     
     class HumanAgent:
@@ -252,27 +252,25 @@ def main():
         def __str__(self):
             return "Player"
     
-    time_limit = 3
+    time_limit = 1
     
     stats = PythelloStats()
     
     agent_1_options = [
-        RandomAgent(),
-        GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
-        GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY, "WMAJ"),
-        AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
-        AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, time_limit, "WMAJ"),
+        #RandomAgent(),
+        #GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
+        #GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY, "WMAJ"),
+        #AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
         PureMonteCarloAgent(time_limit),
-        MonteCarloTreeSearch(time_limit)
+        #MonteCarloTreeSearch(time_limit)
     ]
     agent_2_options = [
-        RandomAgent(),
-        GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
+        #RandomAgent(),
+        #GreedyAgent(EvaluationFunctions.MAJORITY, "MAJ"),
         GreedyAgent(EvaluationFunctions.WEIGHTED_MAJORITY, "WMAJ"),
-        AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
-        AlphaBetaAgent(EvaluationFunctions.WEIGHTED_MAJORITY, time_limit, "WMAJ"),
-        PureMonteCarloAgent(time_limit),
-        MonteCarloTreeSearch(time_limit)
+        #AlphaBetaAgent(EvaluationFunctions.MAJORITY, time_limit, "MAJ"),
+        #PureMonteCarloAgent(time_limit),
+        #MonteCarloTreeSearch(time_limit)
     ]
     random.seed()
     
@@ -312,6 +310,7 @@ def main():
             #time.sleep(.1)
         win_color = board.get_winner()
         win_color_text = COLOR_TO_STRING[win_color]
+        
         
         stats.add_agent_to_stats(agent_1.shortstr())
         stats.add_agent_to_stats(agent_2.shortstr())

@@ -38,7 +38,15 @@ class PythelloStats:
                 "tiesB": 0,
                 "tiesW": 0,
                 "total": 0,
-                "winpct" : 0.0
+                "winpct" : 0,
+                "winpctB": 0,
+                "losepct": 0,
+                "losepctW": 0,
+                "losepctB": 0,
+                "tiepct": 0,
+                "tiepctW": 0,
+                "winpctW": 0,
+                "tiepctB": 0
             }
             d[other_agent][agent] = {
                 "wins" : 0,

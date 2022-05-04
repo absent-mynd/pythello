@@ -11,7 +11,7 @@ f = open('data.json')
 data = json.load(f)
 f.close()
 dict = {}
-agent_labels = ["RANDOM", "GREEDY_MAJ", "GREEDY_WMAJ", "PMC_3", "ab_3_MAJ", "ab_3_WMAJ", "MCTS_3"]
+agent_labels = ["RANDOM", "GREEDY_MAJ", "GREEDY_WMAJ", "PMC", "ab", "MCTS"]
 table_data = []
 #for agent in data.keys():
 #    agent_labels.append(agent)
@@ -21,7 +21,7 @@ table_data = []
 for agent in agent_labels:
     agent_data = []
     for other_agent in agent_labels:
-        agent_data.append(data[agent][other_agent]["winpct"])
+        agent_data.append(data[agent][other_agent]["winpct"] + data[agent][other_agent]["tiepct"]/2)
     table_data.append(agent_data)
 import pandas as pd
  

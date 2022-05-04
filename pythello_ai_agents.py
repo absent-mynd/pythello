@@ -150,7 +150,7 @@ class AlphaBetaAgent:
         return "AlphaBeta Agent (%d seconds max, %s)" % (self.max_time_s, self.eval_shortstr)
     
     def shortstr(self):
-        return "ab_%d_%s" % (3, self.eval_shortstr)
+        return "ab"#_%d_%s" % (3, self.eval_shortstr)
 
 class GreedyAgent:
     
@@ -250,7 +250,7 @@ class PureMonteCarloAgent:
         return "Pure MonteCarlo Agent (%d second(s) max)" % self.max_time_s
     
     def shortstr(self):
-        return "PMC_%d" % 3 
+        return "PMC"#_%d" % 3 
     
 class MonteCarloTreeSearch:
     
@@ -277,5 +277,5 @@ class MonteCarloTreeSearch:
         return "Monte Carlo Tree Search (%d second(s) max)" % (self.max_time_s)
 
     def shortstr(self):
-        return "MCTS_%d" % 3  
+        return "MCTS"#_%d" % self.max_time_s    
     
